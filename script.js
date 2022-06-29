@@ -1,11 +1,12 @@
 let display = document.querySelector(".calculator-display");
-let storedValue;
-let currentValue;
+let memoryNumber = 0;
+let displayNumber;
 let currentOperation = "none";
-let emptyFlag = false;
+let emptyOnNextClick = false;
+let calculatorState = "off";
 
 let clearButton = document.querySelector(".clearButton");
-let colorSwitcherButton = document.querySelector(".colorSwitcherButton");
+let backspaceButton = document.querySelector(".backspaceButton");
 let offButton = document.querySelector(".offButton");
 let onButton = document.querySelector(".onButton");
 let sevenButton = document.querySelector(".sevenButton");
@@ -21,7 +22,7 @@ let twoButton = document.querySelector(".twoButton");
 let threeButton = document.querySelector(".threeButton");
 let minusButton = document.querySelector(".minusButton");
 let zeroButton = document.querySelector(".zeroButton");
-let pointButton = document.querySelector(".pointButton");
+let dotButton = document.querySelector(".dotButton");
 let equalButton = document.querySelector(".equalButton");
 let plusButton = document.querySelector(".plusButton");
 
@@ -41,179 +42,112 @@ function divide(a, b) {
     return a / b;
 }
 
-function operate(a, b, operator) {
-    switch (operator) {
+function updateDisplay() {
+    display.innerText = memoryNumber > 999999999 ? "Error" : memoryNumber;
+}
+
+function clearParameters() {
+    memoryNumber = 0;
+    displayNumber = 0;
+    currentOperation = "none";
+    emptyOnNextClick = false;
+}
+
+function operate(a, b, operation) {
+    displayNumber = Number(display.innerText);
+    b = displayNumber;
+    switch (operation) {
         case "+":
-            add(a, b);
+            memoryNumber = add(a, b);
             break;
         case "-":
-            subtract(a, b);
+            memoryNumber = subtract(a, b);
             break;
         case "*":
-            multiply(a, b);
+            memoryNumber = multiply(a, b);
             break;
         case "/":
-            divide(a, b);
+            memoryNumber = divide(a, b);
             break;
     }
+    updateDisplay();
 }
 
 clearButton.addEventListener("click", () => {
+    display.innerText = "0";
+    clearParameters();
+    emptyOnNextClick = true;
+});
+
+backspaceButton.addEventListener("click", () => {
+    alert("Função ainda não implementada!")
+});
+
+offButton.addEventListener("click", () => {
     display.innerText = "";
-    storedValue = 0;
-    currentValue = 0;
-    currentOperation = "none";
-    emptyFlag = false
+    clearParameters();
+    calculatorState = "off";
 });
 
-// colorSwitcherButton
-// offButton
-// onButton
+onButton.addEventListener("click", () => {
+    display.innerText = "0";
+    clearParameters();
+    calculatorState = "on";
+    emptyOnNextClick = true;
+});
 
-nineButton.addEventListener("click", () => {
+function appendNumber(number) {
+    if (calculatorState === "off") {
+        return;
+    }
     if (display.innerText.length >= 9) {
         return;
     }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 9;
+    if (emptyOnNextClick) {
+         emptyOnNextClick = false;
+         display.innerText = number;
     } else {
-         display.innerText += 9;
-    }
-});
+         display.innerText += number;
+    }    
+}
 
-eightButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 8;
-    } else {
-         display.innerText += 8;
-    }
-});
+nineButton.addEventListener("click", () => appendNumber(9));
+eightButton.addEventListener("click", () => appendNumber(8));
+sevenButton.addEventListener("click", () => appendNumber(7));
+sixButton.addEventListener("click", () => appendNumber(6));
+fiveButton.addEventListener("click", () => appendNumber(5));
+fourButton.addEventListener("click", () => appendNumber(4));
+threeButton.addEventListener("click", () => appendNumber(3));
+twoButton.addEventListener("click", () => appendNumber(2));
+oneButton.addEventListener("click", () => appendNumber(1));
+zeroButton.addEventListener("click", () => appendNumber(0));
 
-sevenButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 7;
-    } else {
-         display.innerText += 7;
-    }
-});
-
-sixButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 6;
-    } else {
-         display.innerText += 6;
-    }
-});
-
-fiveButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 5;
-    } else {
-         display.innerText += 5;
-    }
-});
-
-fourButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 4;
-    } else {
-         display.innerText += 4;
-    }
-});
-
-threeButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 3;
-    } else {
-         display.innerText += 3;
-    }
-});
-
-twoButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 2;
-    } else {
-         display.innerText += 2;
-    }
-});
-
-oneButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 1;
-    } else {
-         display.innerText += 1;
-    }
-});
-
-zeroButton.addEventListener("click", () => {
-    if (display.innerText.length >= 9) {
-        return;
-    }
-    if (emptyFlag) {
-         emptyFlag = false;
-         display.innerText = 0;
-    } else {
-         display.innerText += 0;
-    }
-});
+dotButton.addEventListener("click", () => alert("Função ainda não implementada!"));
 
 plusButton.addEventListener("click", () => {
     currentOperation = "+";
-    emptyFlag = true;
-    storedValue = parseInt(display.innerText);
+    emptyOnNextClick = true;
+    memoryNumber = Number(display.innerText);
+});
+
+minusButton.addEventListener("click", () => {
+    currentOperation = "-";
+    emptyOnNextClick = true;
+    memoryNumber = Number(display.innerText);
+});
+
+divideButton.addEventListener("click", () => {
+    currentOperation = "/";
+    emptyOnNextClick = true;
+    memoryNumber = Number(display.innerText);
+});
+
+multiplyButton.addEventListener("click", () => {
+    currentOperation = "*";
+    emptyOnNextClick = true;
+    memoryNumber = Number(display.innerText);
 });
 
 equalButton.addEventListener("click", () => {
-    currentValue = parseInt(display.innerText);
-    switch (currentOperation) {
-        case "+":
-            storedValue = add(storedValue, currentValue);
-            display.innerText = storedValue;
-            break;
-        case "-":
-            storedValue = add(storedValue, currentValue);
-            display.innerText = storedValue;
-            break;
-        case "*":
-            storedValue = add(storedValue, currentValue);
-            display.innerText = storedValue;
-            break;
-        case "/":
-            storedValue = add(storedValue, currentValue);
-            display.innerText = storedValue;
-            break;
-    }
+    operate(memoryNumber, displayNumber, currentOperation)
 });
