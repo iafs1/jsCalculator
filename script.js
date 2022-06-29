@@ -125,24 +125,36 @@ zeroButton.addEventListener("click", () => appendNumber(0));
 dotButton.addEventListener("click", () => alert("Função ainda não implementada!"));
 
 plusButton.addEventListener("click", () => {
+    if (currentOperation !== "none") {
+        operate(memoryNumber, displayNumber, currentOperation);
+    }
     currentOperation = "+";
     emptyOnNextClick = true;
     memoryNumber = Number(display.innerText);
 });
 
 minusButton.addEventListener("click", () => {
+    if (currentOperation !== "none") {
+        operate(memoryNumber, displayNumber, currentOperation);
+    }
     currentOperation = "-";
     emptyOnNextClick = true;
     memoryNumber = Number(display.innerText);
 });
 
 divideButton.addEventListener("click", () => {
+    if (currentOperation !== "none") {
+        operate(memoryNumber, displayNumber, currentOperation);
+    }
     currentOperation = "/";
     emptyOnNextClick = true;
     memoryNumber = Number(display.innerText);
 });
 
 multiplyButton.addEventListener("click", () => {
+    if (currentOperation !== "none") {
+        operate(memoryNumber, displayNumber, currentOperation);
+    }
     currentOperation = "*";
     emptyOnNextClick = true;
     memoryNumber = Number(display.innerText);
